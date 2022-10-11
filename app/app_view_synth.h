@@ -47,6 +47,7 @@ public:
     App_View_Synth()
         : App_View_Table(fields, VIEW_INSTR_ROW, VIEW_INSTR_COL)
     {
+        initSelection();
     }
 };
 
