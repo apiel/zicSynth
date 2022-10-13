@@ -4,15 +4,12 @@
 #include "./app_def.h"
 #include <app_core_display.h>
 #include <app_core_renderer.h>
-#include "./app_tracks.h"
+#include "./app_synth.h"
 #include "./app_view_synth.h"
-
-#include <zic_seq_tempo.h>
 
 class App {
 public:
-    App_Tracks tracks;
-    Zic_Seq_Tempo<> tempo;
+    App_Synth synth;
 
     App_Display* display;
     UiKeys keys;
@@ -28,14 +25,7 @@ public:
 
     int16_t sample()
     {
-        if (tempo.next()) {
-            tracks.next();
-            // if (menuView.getView()->renderOn(EVENT_VIEW_ON_TEMPO)) {
-            //     render();
-            // }
-        }
-        return tracks.sample();
-        // return tracks.sample() + lv2.sample();
+        return synth.sample();
     }
 
     void render()
