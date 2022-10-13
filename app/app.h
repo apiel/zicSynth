@@ -2,10 +2,10 @@
 #define APP_H_
 
 #include "./app_def.h"
-#include <app_core_display.h>
-#include <app_core_renderer.h>
 #include "./app_synth.h"
 #include "./app_view_synth.h"
+#include <app_core_display.h>
+#include <app_core_renderer.h>
 
 class App {
 public:
@@ -20,6 +20,7 @@ public:
 
     App(App_Display* _display)
         : display(_display)
+        , synthView(&synth)
     {
     }
 

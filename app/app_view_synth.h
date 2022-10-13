@@ -3,6 +3,8 @@
 
 #include <app_core_view_table.h>
 
+#include "./app_synth.h"
+
 #define VIEW_INSTR_ROW 8
 #define VIEW_INSTR_COL 3
 
@@ -43,7 +45,7 @@ protected:
     };
 
 public:
-    App_View_Synth()
+    App_View_Synth(App_Synth* _synth)
         : App_View_Table(fields, VIEW_INSTR_ROW, VIEW_INSTR_COL)
     {
         initSelection();
