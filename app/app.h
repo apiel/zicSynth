@@ -42,13 +42,13 @@ public:
 
     void handleUi(uint8_t keysBin)
     {
-        // keys.Up = (keysBin >> UI_KEY_UP) & 1;
-        // keys.Down = (keysBin >> UI_KEY_DOWN) & 1;
-        // keys.Left = (keysBin >> UI_KEY_LEFT) & 1;
-        // keys.Right = (keysBin >> UI_KEY_RIGHT) & 1;
-        // keys.Edit = (keysBin >> UI_KEY_EDIT) & 1;
-        // keys.Menu = (keysBin >> UI_KEY_MENU) & 1;
-        // // SDL_Log("%d%d%d%d%d%d\n", keys.Up, keys.Down, keys.Left, keys.Right, keys.A, keys.Y);
+        keys.Up = (keysBin >> UI_KEY_UP) & 1;
+        keys.Down = (keysBin >> UI_KEY_DOWN) & 1;
+        keys.Left = (keysBin >> UI_KEY_LEFT) & 1;
+        keys.Right = (keysBin >> UI_KEY_RIGHT) & 1;
+        keys.Edit = (keysBin >> UI_KEY_EDIT) & 1;
+        keys.Menu = (keysBin >> UI_KEY_MENU) & 1;
+        // SDL_Log("%d%d%d%d%d%d\n", keys.Up, keys.Down, keys.Left, keys.Right, keys.A, keys.Y);
 
         // if (keys.Menu && keys.Edit) {
         //     tracks.togglePlay();
@@ -57,6 +57,12 @@ public:
         // } else if (menuView.getView()->update(&keys, display) != VIEW_NONE) {
         //     render();
         // }
+
+
+
+        if (synthView.update(&keys, display) != VIEW_NONE) {
+            render();
+        }
     }
 
     void quit()
