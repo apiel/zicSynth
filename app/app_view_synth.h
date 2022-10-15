@@ -60,14 +60,17 @@ public:
 
         case 2:
             cursor = 5;
-            sprintf(renderer->text + strlen(renderer->text), " %-5.1f ", wave->getMorph() + 1.0f);
+            sprintf(renderer->text + strlen(renderer->text), " %5.1f", wave->getMorph() + 1.0f);
+            // sprintf(renderer->text + strlen(renderer->text), " %-5.1f", 256.0f);
             break;
 
-        case 3:
+        case 3: {
             cursor = 7;
-            sprintf(renderer->text + strlen(renderer->text), " %-5.1fHz", wave->getFrequency());
+            float freq = wave->getFrequency();
+            sprintf(renderer->text + strlen(renderer->text),
+                freq > 999 ? " %f.0Hz" : (freq > 99 ? " %5.1fHz" : (freq > 9 ? " %5.2fHz" : " %5.3fHz")), freq);
             break;
-
+        }
         default:
             break;
         }
