@@ -9,34 +9,17 @@
 #define VIEW_INSTR_ROW 8
 #define VIEW_INSTR_COL 4
 
-// class App_View_SynthRow : public App_View_TableLabeledRow {
-// public:
-//     App_View_SynthRow()
-//         : App_View_TableLabeledRow("1", 0)
-//     {
-//     }
-
-//     void renderValue(App_Renderer* renderer, uint8_t col)
-//     {
-//         // sprintf(renderer->text + strlen(renderer->text), "%-2d", tracks->trackId + 1);
-//         strcat(renderer->text, "hello12345.wav 256.0 22050Hz");
-//     }
-
-//     uint8_t update(UiKeys* keys, App_Renderer* renderer, uint8_t row, uint8_t col) override
-//     {
-//         return VIEW_NONE;
-//     }
-// };
-
 class App_View_OscField : public App_View_TableField {
 protected:
     uint8_t oscId;
     Zic_Wave_File* wave;
+    char * filename;
 
 public:
-    App_View_OscField(uint8_t _oscId, Zic_Wave_File* _wave)
+    App_View_OscField(uint8_t _oscId, Zic_Wave_File* _wave, char * _filename)
         : oscId(_oscId)
         , wave(_wave)
+        , filename(_filename)
     {
     }
 
@@ -55,7 +38,7 @@ public:
 
         case 1:
             cursor = 14;
-            sprintf(renderer->text + strlen(renderer->text), "%s", "hello12345.wav");
+            sprintf(renderer->text + strlen(renderer->text), "%14s", filename);
             break;
 
         case 2:
@@ -87,7 +70,6 @@ public:
 
 class App_View_Synth : public App_View_Table {
 protected:
-    // App_View_SynthRow synthField;
     App_View_OscField osc1Field;
     App_View_OscField osc2Field;
     App_View_OscField osc3Field;
@@ -109,10 +91,10 @@ protected:
 public:
     App_View_Synth(App_Synth* _synth)
         : App_View_Table(fields, VIEW_INSTR_ROW, VIEW_INSTR_COL)
-        , osc1Field(0, &_synth->wave[0])
-        , osc2Field(1, &_synth->wave[1])
-        , osc3Field(2, &_synth->wave[2])
-        , osc4Field(3, &_synth->wave[3])
+        , osc1Field(0, &_synth->wave[0], &_synth->filename[0][0])
+        , osc2Field(1, &_synth->wave[1], &_synth->filename[1][0])
+        , osc3Field(2, &_synth->wave[2], &_synth->filename[2][0])
+        , osc4Field(3, &_synth->wave[3], &_synth->filename[3][0])
     {
         initSelection();
     }

@@ -50,16 +50,6 @@ public:
         keys.Menu = (keysBin >> UI_KEY_MENU) & 1;
         // SDL_Log("%d%d%d%d%d%d\n", keys.Up, keys.Down, keys.Left, keys.Right, keys.A, keys.Y);
 
-        // if (keys.Menu && keys.Edit) {
-        //     tracks.togglePlay();
-        // } else if (menuView.update(&keys, display) != VIEW_NONE) {
-        //     render();
-        // } else if (menuView.getView()->update(&keys, display) != VIEW_NONE) {
-        //     render();
-        // }
-
-
-
         if (synthView.update(&keys, display) != VIEW_NONE) {
             render();
         }
