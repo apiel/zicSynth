@@ -101,7 +101,7 @@ public:
 
     void initDisplay(App_Renderer* renderer)
     {
-        // renderer->useColoredLabel();
+        renderer->useColor(0, 4, 0, 1);
         // renderer->useFirstLetterHilighted();
         App_View_Table::initDisplay(renderer);
     }
