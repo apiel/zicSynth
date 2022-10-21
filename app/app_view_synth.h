@@ -13,10 +13,10 @@ class App_View_OscField : public App_View_TableField {
 protected:
     uint8_t oscId;
     Zic_Wave_File* wave;
-    char * filename;
+    char* filename;
 
 public:
-    App_View_OscField(uint8_t _oscId, Zic_Wave_File* _wave, char * _filename)
+    App_View_OscField(uint8_t _oscId, Zic_Wave_File* _wave, char* _filename)
         : oscId(_oscId)
         , wave(_wave)
         , filename(_filename)
@@ -51,7 +51,7 @@ public:
             cursor = 7;
             float freq = wave->getFrequency();
             sprintf(renderer->text + strlen(renderer->text),
-                freq > 999 ? " %f.0Hz" : (freq > 99 ? " %5.1fHz" : (freq > 9 ? " %5.2fHz" : " %5.3fHz")), freq);
+                freq >= 1000 ? " %f.0Hz" : (freq >= 100 ? " %5.1fHz" : (freq >= 10 ? " %5.2fHz" : " %5.3fHz")), freq);
             break;
         }
         default:
@@ -64,6 +64,35 @@ public:
 
     uint8_t update(UiKeys* keys, App_Renderer* renderer, uint8_t row, uint8_t col) override
     {
+        switch (col) {
+        case 0:
+            break;
+
+        case 1:
+            break;
+
+        case 2:
+            break;
+
+        case 3: {
+            float freq = wave->getFrequency();
+            float step = freq < 10.0 ? 0.01 : (freq < 100.0 ? 0.1 : 1.0);
+            float inc = 0.0;
+            if (keys->Right) {
+                inc = 0.1 * step;
+            } else if (keys->Up) {
+                inc = 1.0 * step;
+            } else if (keys->Left) {
+                inc = -0.1 * step;
+            } else if (keys->Down) {
+                inc = -1.0 * step;
+            }
+            wave->setFrequency(freq + inc);
+            return VIEW_CHANGED;
+        }
+        default:
+            break;
+        }
         return VIEW_NONE;
     }
 };
