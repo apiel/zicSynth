@@ -64,30 +64,19 @@ public:
 
     uint8_t update(UiKeys* keys, App_Renderer* renderer, uint8_t row, uint8_t col) override
     {
-        // TODO move this somewhere else, maybe in the view? or table stuff?
-        int8_t inc = 0;
-        if (keys->Right) {
-            inc = 1;
-        } else if (keys->Up) {
-            inc = 10;
-        } else if (keys->Left) {
-            inc = -1;
-        } else if (keys->Down) {
-            inc = -10;
-        }
         switch (col) {
         case 1:
             return VIEW_CHANGED;
 
         case 2: {
             float morph = wave->getMorph();
-            wave->morph(morph + (inc * 0.1f));
+            wave->morph(morph + (getDirection(keys) * 0.1f));
             return VIEW_CHANGED;
         }
         case 3: {
             float freq = wave->getFrequency();
             float step = freq < 10.0 ? 0.001 : (freq < 100.0 ? 0.01 : 0.1);
-            wave->setFrequency(freq + (inc * step));
+            wave->setFrequency(freq + (getDirection(keys) * step));
             return VIEW_CHANGED;
         }
         default:
