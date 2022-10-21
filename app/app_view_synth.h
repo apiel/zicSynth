@@ -12,14 +12,12 @@
 class App_View_OscField : public App_View_TableField {
 protected:
     uint8_t oscId;
-    Zic_Wave_File* wave;
-    char* filename;
+    App_Wavetable* wavetable;
 
 public:
-    App_View_OscField(uint8_t _oscId, Zic_Wave_File* _wave, char* _filename)
+    App_View_OscField(uint8_t _oscId, App_Wavetable* _wavetable)
         : oscId(_oscId)
-        , wave(_wave)
-        , filename(_filename)
+        , wavetable(_wavetable)
     {
     }
 
@@ -38,18 +36,18 @@ public:
 
         case 1:
             cursor = 14;
-            sprintf(renderer->text + strlen(renderer->text), "%14s", filename);
+            sprintf(renderer->text + strlen(renderer->text), "%14s", wavetable->filename);
             break;
 
         case 2:
             cursor = 5;
-            sprintf(renderer->text + strlen(renderer->text), " %5.1f", wave->getMorph() + 1.0f);
+            sprintf(renderer->text + strlen(renderer->text), " %5.1f", wavetable->getMorph() + 1.0f);
             // sprintf(renderer->text + strlen(renderer->text), " %-5.1f", 256.0f);
             break;
 
         case 3: {
             cursor = 7;
-            float freq = wave->getFrequency();
+            float freq = wavetable->getFrequency();
             sprintf(renderer->text + strlen(renderer->text),
                 freq >= 1000 ? " %f.0Hz" : (freq >= 100 ? " %5.1fHz" : (freq >= 10 ? " %5.2fHz" : " %5.3fHz")), freq);
             break;
@@ -69,14 +67,14 @@ public:
             return VIEW_CHANGED;
 
         case 2: {
-            float morph = wave->getMorph();
-            wave->morph(morph + (getDirection(keys) * 0.1f));
+            float morph = wavetable->getMorph();
+            wavetable->morph(morph + (getDirection(keys) * 0.1f));
             return VIEW_CHANGED;
         }
         case 3: {
-            float freq = wave->getFrequency();
+            float freq = wavetable->getFrequency();
             float step = freq < 10.0 ? 0.001 : (freq < 100.0 ? 0.01 : 0.1);
-            wave->setFrequency(freq + (getDirection(keys) * step));
+            wavetable->setFrequency(freq + (getDirection(keys) * step));
             return VIEW_CHANGED;
         }
         default:
@@ -109,10 +107,10 @@ protected:
 public:
     App_View_Synth(App_Synth* _synth)
         : App_View_Table(fields, VIEW_INSTR_ROW, VIEW_INSTR_COL)
-        , osc1Field(0, &_synth->wave[0], &_synth->filename[0][0])
-        , osc2Field(1, &_synth->wave[1], &_synth->filename[1][0])
-        , osc3Field(2, &_synth->wave[2], &_synth->filename[2][0])
-        , osc4Field(3, &_synth->wave[3], &_synth->filename[3][0])
+        , osc1Field(0, &_synth->wavetable[0])
+        , osc2Field(1, &_synth->wavetable[1])
+        , osc3Field(2, &_synth->wavetable[2])
+        , osc4Field(3, &_synth->wavetable[3])
     {
         initSelection();
     }
