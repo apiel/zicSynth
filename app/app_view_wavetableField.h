@@ -60,6 +60,7 @@ public:
     {
         switch (col) {
         case 1:
+            wavetable->setNext(getDirection(keys));
             return VIEW_CHANGED;
 
         case 2: {

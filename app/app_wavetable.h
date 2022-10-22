@@ -17,6 +17,15 @@ public:
         snprintf(filepath, 270, "%s/%s", APP_WAVETABLES_FOLDER, filename);
         open(filepath, true);
     }
+
+    App_Wavetable* setNext(int8_t direction = 0)
+    {
+        // TODO if direction > 1 then should jump to next letter
+        direction = range(direction, -1,  1);
+        nextFile(filename, APP_WAVETABLES_FOLDER, filename, direction);
+        open(filename, true);
+        return this;
+    }
 };
 
 #endif
