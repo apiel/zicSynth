@@ -60,18 +60,18 @@ public:
     {
         switch (col) {
         case 1:
-            wavetable->setNext(getDirection(keys));
+            wavetable->setNext(keys->getDirection());
             return VIEW_CHANGED;
 
         case 2: {
             float morph = wavetable->getMorph();
-            wavetable->morph(morph + (getDirection(keys) * 0.1f));
+            wavetable->morph(morph + (keys->getDirection(0.1f)));
             return VIEW_CHANGED;
         }
         case 3: {
             float freq = wavetable->getFrequency();
             float step = freq < 10.0 ? 0.001 : (freq < 100.0 ? 0.01 : 0.1);
-            wavetable->setFrequency(freq + (getDirection(keys) * step));
+            wavetable->setFrequency(freq + (keys->getDirection(step)));
             return VIEW_CHANGED;
         }
         default:
