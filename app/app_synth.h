@@ -1,7 +1,7 @@
 #ifndef APP_SYNTH_H_
 #define APP_SYNTH_H_
 
-#include <zic_mod_filter.h>
+#include <zic_effect_filter.h>
 
 #include "./app_wavetable.h"
 
@@ -10,7 +10,7 @@
 class App_Synth {
 public:
     App_Wavetable wavetable[APP_SYNTH_WAVE_COUNT];
-    Zic_Mod_Filter filter;
+    Zic_Effect_Filter filter;
 
     int16_t sample()
     {
