@@ -40,7 +40,7 @@ public:
         }
     }
 
-    void handleUi(uint8_t keysBin)
+    void handleUi(uint16_t keysBin)
     {
         keys.Up = (keysBin >> UI_KEY_UP) & 1;
         keys.Down = (keysBin >> UI_KEY_DOWN) & 1;
@@ -48,7 +48,13 @@ public:
         keys.Right = (keysBin >> UI_KEY_RIGHT) & 1;
         keys.Edit = (keysBin >> UI_KEY_EDIT) & 1;
         keys.Menu = (keysBin >> UI_KEY_MENU) & 1;
-        // SDL_Log("%d%d%d%d%d%d\n", keys.Up, keys.Down, keys.Left, keys.Right, keys.A, keys.Y);
+        keys.Action = (keysBin >> UI_KEY_ACTION) & 1;
+
+        // SDL_Log("%d%d%d%d%d%d%d\n", keys.Up, keys.Down, keys.Left, keys.Right, keys.Edit, keys.Menu, keys.Action);
+
+        if (keys.Action) {
+            printf("Action\n");
+        }
 
         if (synthView.update(&keys, display) != VIEW_NONE) {
             render();
