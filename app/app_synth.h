@@ -7,16 +7,18 @@
 #include "./app_wavetable.h"
 
 #define APP_SYNTH_WAVE_COUNT 4
+#define APP_SYNTH_ENV_COUNT 2
 
 class App_Synth {
 public:
     App_Wavetable wavetable[APP_SYNTH_WAVE_COUNT];
     Zic_Effect_Filter filter;
-    Zic_Mod_Adsr adsr;
+    Zic_Mod_Adsr adsr[APP_SYNTH_ENV_COUNT];
 
     int16_t sample()
     {
-        return adsr.next(wavetable[0].next());
+        // Maybe note play wavetable if envelop is 0.0f
+        return adsr[0].next(wavetable[0].next());
         // return wavetable[0].next();
     }
 };

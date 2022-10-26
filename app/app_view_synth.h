@@ -5,8 +5,8 @@
 // #include <zic_wave_file.h>
 
 #include "./app_synth.h"
-#include "./app_view_wavetableField.h"
 #include "./app_view_envField.h"
+#include "./app_view_wavetableField.h"
 
 #define VIEW_INSTR_ROW 8
 #define VIEW_INSTR_COL 5
@@ -41,8 +41,8 @@ public:
         , wavetable2Field(1, &_synth->wavetable[1])
         , wavetable3Field(2, &_synth->wavetable[2])
         , wavetable4Field(3, &_synth->wavetable[3])
-        , env1Field(0)
-        , env2Field(1)
+        , env1Field(0, &_synth->adsr[0])
+        , env2Field(1, &_synth->adsr[1])
     {
         initSelection();
     }

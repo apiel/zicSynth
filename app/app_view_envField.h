@@ -3,17 +3,17 @@
 
 #include <app_core_view_table.h>
 
+#include <zic_mod_adsr.h>
+
 class App_View_EnvField : public App_View_TableField {
 protected:
     uint8_t envId;
-    // App_Env* env;
+    Zic_Mod_Adsr* adsr;
 
 public:
-    App_View_EnvField(uint8_t _envId
-        // , App_Env* _env
-        )
+    App_View_EnvField(uint8_t _envId, Zic_Mod_Adsr* _adsr)
         : envId(_envId)
-    // , env(_env)
+        , adsr(_adsr)
     {
     }
 
@@ -32,22 +32,22 @@ public:
 
         case 1:
             cursor = 4;
-            sprintf(renderer->text + strlen(renderer->text), " A=%-4d", 100);
+            sprintf(renderer->text + strlen(renderer->text), " A=%-4d", adsr->getAttack());
             break;
 
         case 2:
             cursor = 4;
-            sprintf(renderer->text + strlen(renderer->text), " D=%-4d", 10);
+            sprintf(renderer->text + strlen(renderer->text), " D=%-4d", adsr->getDecay());
             break;
 
         case 3:
             cursor = 3;
-            sprintf(renderer->text + strlen(renderer->text), " S=%-3d", 90);
+            sprintf(renderer->text + strlen(renderer->text), " S=%-3d", (uint8_t)(adsr->getSustain() * 100));
             break;
 
         case 4:
             cursor = 5;
-            sprintf(renderer->text + strlen(renderer->text), " R=%-5d", 1000);
+            sprintf(renderer->text + strlen(renderer->text), " R=%-5d", adsr->getRelease());
             break;
 
         default:
@@ -61,14 +61,17 @@ public:
     uint8_t update(UiKeys* keys, App_Renderer* renderer, uint8_t row, uint8_t col) override
     {
         switch (col) {
-        case 1:
+        case 1: 
+            adsr->setAttack(adsr->getAttack() + keys->getDirection(10.0f));
             return VIEW_CHANGED;
-
         case 2:
+            adsr->setDecay(adsr->getDecay() + keys->getDirection(10.0f));
             return VIEW_CHANGED;
         case 3:
+            adsr->setSustain(adsr->getSustain() + keys->getDirection(0.01f));
             return VIEW_CHANGED;
         case 4:
+            adsr->setRelease(adsr->getRelease() + keys->getDirection(10.0f));
             return VIEW_CHANGED;
         default:
             break;

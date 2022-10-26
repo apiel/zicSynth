@@ -54,10 +54,10 @@ public:
 
         if (keys.Action) {
             printf("Action on\n");
-            synth.adsr.on();
-        } else if (synth.adsr.isOn()) {
+            synth.adsr[0].on();
+        } else if (synth.adsr[0].isOn()) {
             printf("Action off\n");
-            synth.adsr.off();
+            synth.adsr[0].off();
         }
 
         if (synthView.update(&keys, display) != VIEW_NONE) {
