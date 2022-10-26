@@ -16,7 +16,8 @@ public:
 
     int16_t sample()
     {
-        return 0;
+        return adsr.next(wavetable[0].next());
+        // return wavetable[0].next();
     }
 };
 

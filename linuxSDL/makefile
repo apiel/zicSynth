@@ -50,4 +50,5 @@ build:
 # -Wno-narrowing for font.h:62:56: warning: narrowing conversion of ‘(8 * ((int)size))’ from ‘int’ to ‘Uint16’ {aka ‘short unsigned int’} inside { } [-Wnarrowing]
 
 run:
+	echo start zicSynth
 	./zicSynth

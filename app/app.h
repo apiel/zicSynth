@@ -53,7 +53,11 @@ public:
         // SDL_Log("%d%d%d%d%d%d%d\n", keys.Up, keys.Down, keys.Left, keys.Right, keys.Edit, keys.Menu, keys.Action);
 
         if (keys.Action) {
-            printf("Action\n");
+            printf("Action on\n");
+            synth.adsr.on();
+        } else if (synth.adsr.isOn()) {
+            printf("Action off\n");
+            synth.adsr.off();
         }
 
         if (synthView.update(&keys, display) != VIEW_NONE) {
