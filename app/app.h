@@ -52,6 +52,7 @@ public:
 
         // SDL_Log("%d%d%d%d%d%d%d\n", keys.Up, keys.Down, keys.Left, keys.Right, keys.Edit, keys.Menu, keys.Action);
 
+        // might need to move the logic?
         if (keys.Action) {
             printf("Action on\n");
             synth.adsr[0].on();
