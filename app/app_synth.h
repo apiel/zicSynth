@@ -32,4 +32,8 @@ public:
 // Use Y button to trigger noteOn noteOff
 // L1/R1 could be to switch the note to play?? or not :p
 
+// would be great that at the end of a phase of the OSC to trigger a something
+// e.g. trigger a random pitch change
+// or trigger pitch inc?
+
 #endif
