@@ -52,7 +52,8 @@ public:
     {
         switch (col) {
         case 1:
-            filter->setFilterMode(keys->getOneDirection());
+            filter->setFilterMode(filter->mode + keys->getOneDirection());
+            // filter->setFilterMode(filter->mode + 1);
             return VIEW_CHANGED;
         case 2:
             filter->setFrequency(filter->frequency + keys->getDirection());
