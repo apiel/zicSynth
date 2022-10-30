@@ -17,8 +17,9 @@ public:
 
     int16_t sample()
     {
+        // Should the filter be around the adsr?
         // Maybe note play wavetable if envelop is 0.0f
-        return adsr[0].next(wavetable[0].next());
+        return adsr[0].next(filter.next(wavetable[0].next()));
         // return wavetable[0].next();
     }
 };

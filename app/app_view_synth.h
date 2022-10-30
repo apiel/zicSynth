@@ -7,6 +7,7 @@
 #include "./app_synth.h"
 #include "./app_view_envField.h"
 #include "./app_view_wavetableField.h"
+#include "./app_view_filterField.h"
 
 #define VIEW_INSTR_ROW 8
 #define VIEW_INSTR_COL 5
@@ -21,6 +22,8 @@ protected:
     App_View_EnvField env1Field;
     App_View_EnvField env2Field;
 
+    App_View_FilterField filterField;
+
     App_View_TableField* fields[VIEW_INSTR_ROW * VIEW_INSTR_COL] = {
         // clang-format off
         &wavetable1Field, &wavetable1Field, &wavetable1Field, &wavetable1Field, NULL,
@@ -29,7 +32,7 @@ protected:
         &wavetable4Field, &wavetable4Field, &wavetable4Field, &wavetable4Field, NULL,
         &env1Field, &env1Field, &env1Field, &env1Field, &env1Field,
         &env2Field, &env2Field, &env2Field, &env2Field, &env2Field,
-        NULL, NULL, NULL, NULL, NULL,
+        &filterField, &filterField, &filterField, &filterField, NULL,
         NULL, NULL, NULL, NULL, NULL,
         // clang-format on
     };
@@ -43,6 +46,7 @@ public:
         , wavetable4Field(3, &_synth->wavetable[3])
         , env1Field(0, &_synth->adsr[0])
         , env2Field(1, &_synth->adsr[1])
+        , filterField(&_synth->filter)
     {
         initSelection();
     }
