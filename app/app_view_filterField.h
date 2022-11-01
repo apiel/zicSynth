@@ -25,8 +25,9 @@ public:
         uint8_t cursor = 0;
         switch (col) {
         case 1:
-            cursor = 3;
-            strcat(renderer->text, filter->getName());
+            cursor = 8;
+            // strcat(renderer->text, filter->getName());
+            sprintf(renderer->text + strlen(renderer->text), "%8s", filter->getName());
             break;
 
         case 2:
