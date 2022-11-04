@@ -10,6 +10,11 @@
 #define APP_SYNTH_ENV_COUNT 2
 #define APP_SYNTH_PATCHE_COUNT 4
 
+class App_Synth_Patch {
+public:
+    uint8_t out = 0;
+};
+
 class App_Synth {
 protected:
     enum {
@@ -28,15 +33,14 @@ public:
     Zic_Effect_Filter filter;
     Zic_Mod_Adsr adsr[APP_SYNTH_ENV_COUNT];
 
-    uint8_t patches[APP_SYNTH_PATCHE_COUNT] = { OSC_OUT, ASDR_OUT, FILTER_OUT, NONE };
+    App_Synth_Patch patches[APP_SYNTH_PATCHE_COUNT] = { OSC_OUT, ASDR_OUT, FILTER_OUT, NONE };
 
     int16_t sample()
     {
         // Maybe if value to apply envelop or filter is 0.0f, skip it?
 
-        for(uint8_t i = 0; i < APP_SYNTH_WAVE_COUNT; i++) {
-            switch (patches[i])
-            {
+        for (uint8_t i = 0; i < APP_SYNTH_WAVE_COUNT; i++) {
+            switch (patches[i].out) {
             case OSC_OUT:
                 oscOut[0] = wavetable[0].next();
                 break;
@@ -48,7 +52,7 @@ public:
             case FILTER_OUT:
                 filterOut = filter.next(adsrOut[0]);
                 break;
-            
+
             default:
                 break;
             }
