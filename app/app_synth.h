@@ -13,6 +13,8 @@
 class App_Synth_Patch {
 public:
     uint8_t out = 0;
+    uint8_t sign = 0;
+    uint8_t to = 0;
 };
 
 class App_Synth {
@@ -24,8 +26,27 @@ protected:
         FILTER_OUT,
     };
 
+    enum {
+        OSC_VALUE,
+        ASDR_VALUE,
+        ATTACK_VALUE,
+        SUSTAN_VALUE,
+        DECAY_VALUE,
+        RELEASE_VALUE,
+        FILTER_VALUE,
+        FILTER_CUTOFF_VALUE,
+        FILTER_RESONANCE_VALUE,
+    };
+
+    enum {
+        ADD_TO,
+        SUBSTRACT_FROM,
+        MULTIPLY_BY,
+        DIVIDE_BY,
+    };
+
     int16_t oscOut[APP_SYNTH_WAVE_COUNT];
-    int16_t adsrOut[APP_SYNTH_ENV_COUNT];
+    float adsrOut[APP_SYNTH_ENV_COUNT];
     int16_t filterOut = 0;
 
 public:
@@ -33,7 +54,12 @@ public:
     Zic_Effect_Filter filter;
     Zic_Mod_Adsr adsr[APP_SYNTH_ENV_COUNT];
 
-    App_Synth_Patch patches[APP_SYNTH_PATCHE_COUNT] = { OSC_OUT, ASDR_OUT, FILTER_OUT, NONE };
+    App_Synth_Patch patches[APP_SYNTH_PATCHE_COUNT] = {
+        { OSC_OUT },
+        { ASDR_OUT, MULTIPLY_BY, OSC_VALUE },
+        { FILTER_OUT },
+        { NONE }
+    };
 
     int16_t sample()
     {
@@ -46,11 +72,11 @@ public:
                 break;
 
             case ASDR_OUT:
-                adsrOut[0] = adsr[0].next(oscOut[0]);
+                adsrOut[0] = adsr[0].next();
                 break;
 
             case FILTER_OUT:
-                filterOut = filter.next(adsrOut[0]);
+                filterOut = filter.next(oscOut[0] * adsrOut[0]);
                 break;
 
             default:
