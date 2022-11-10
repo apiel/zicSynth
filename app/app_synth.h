@@ -20,25 +20,29 @@ public:
 class App_Synth {
 protected:
     enum {
-        NONE,
+        NO_OUT,
         OSC_OUT,
         ASDR_OUT,
         FILTER_OUT,
     };
 
     enum {
-        OSC_VALUE,
-        ASDR_VALUE,
+        NO_VALUE,
+        // OSC_VALUE,
+        PITCH_VALUE,
+        MORPH_VALUE,
+        // ASDR_VALUE,
         ATTACK_VALUE,
         SUSTAN_VALUE,
         DECAY_VALUE,
         RELEASE_VALUE,
-        FILTER_VALUE,
+        // FILTER_VALUE,
         FILTER_CUTOFF_VALUE,
         FILTER_RESONANCE_VALUE,
     };
 
     enum {
+        NO_SIGN,
         ADD_TO,
         SUBSTRACT_FROM,
         MULTIPLY_BY,
@@ -55,10 +59,10 @@ public:
     Zic_Mod_Adsr adsr[APP_SYNTH_ENV_COUNT];
 
     App_Synth_Patch patches[APP_SYNTH_PATCHE_COUNT] = {
-        { OSC_OUT },
+        { OSC_OUT, NO_SIGN, NO_VALUE },
         { ASDR_OUT, MULTIPLY_BY, OSC_VALUE },
-        { FILTER_OUT },
-        { NONE }
+        { FILTER_OUT, NO_SIGN, NO_VALUE }, // But how does it know what come in?
+        { NO_OUT, NO_SIGN, NO_VALUE }
     };
 
     int16_t sample()
