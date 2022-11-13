@@ -13,8 +13,9 @@
 class App_Synth_Patch {
 public:
     uint8_t out = 0;
-    uint8_t sign = 0;
-    uint8_t to = 0;
+    uint8_t outPos = 0;
+    uint8_t target = 0;
+    uint8_t targetPos = 0;
 };
 
 class App_Synth {
@@ -22,36 +23,32 @@ protected:
     enum {
         NO_OUT,
         OSC_OUT,
-        ASDR_OUT,
-        FILTER_OUT,
+        ENV_OUT,
+        PITCH_OUT,
     };
 
     enum {
-        NO_VALUE,
-        // OSC_VALUE,
-        PITCH_VALUE,
-        MORPH_VALUE,
-        // ASDR_VALUE,
-        ATTACK_VALUE,
-        SUSTAN_VALUE,
-        DECAY_VALUE,
-        RELEASE_VALUE,
-        // FILTER_VALUE,
-        FILTER_CUTOFF_VALUE,
-        FILTER_RESONANCE_VALUE,
-    };
-
-    enum {
-        NO_SIGN,
-        ADD_TO,
-        SUBSTRACT_FROM,
-        MULTIPLY_BY,
-        DIVIDE_BY,
+        OSC_PITCH,
+        OSC_MORPH,
+        OSC_AMPLITUDE,
+        ENV_ATTACK,
+        ENV_DECAY,
+        ENV_SUSTAN,
+        ENV_RELEASE,
+        FILTER_INPUT,
+        FILTER_CUTOFF,
+        FILTER_RESONANCE,
+        OUTPUT,
     };
 
     int16_t oscOut[APP_SYNTH_WAVE_COUNT];
-    float adsrOut[APP_SYNTH_ENV_COUNT];
+    bool oscOutFree[APP_SYNTH_WAVE_COUNT];
+
+    float envOut[APP_SYNTH_ENV_COUNT];
+    bool envOutFree[APP_SYNTH_ENV_COUNT];
+
     int16_t filterOut = 0;
+    int16_t filterInput = 0;
 
 public:
     App_Wavetable wavetable[APP_SYNTH_WAVE_COUNT];
@@ -59,34 +56,50 @@ public:
     Zic_Mod_Adsr adsr[APP_SYNTH_ENV_COUNT];
 
     App_Synth_Patch patches[APP_SYNTH_PATCHE_COUNT] = {
-        { OSC_OUT, NO_SIGN, NO_VALUE },
-        { ASDR_OUT, MULTIPLY_BY, OSC_VALUE },
-        { FILTER_OUT, NO_SIGN, NO_VALUE }, // But how does it know what come in?
-        { NO_OUT, NO_SIGN, NO_VALUE }
+        { ENV_OUT, 0, OSC_AMPLITUDE, 0 },
+        { OSC_OUT, 0, FILTER_INPUT, 0 },
+        { NO_OUT },
+        { NO_OUT }
     };
 
     int16_t sample()
     {
-        // Maybe if value to apply envelop or filter is 0.0f, skip it?
+        for (int i = 0; i < APP_SYNTH_WAVE_COUNT; i++) {
+            oscOutFree[i] = true;
+        }
+
+        for (int i = 0; i < APP_SYNTH_ENV_COUNT; i++) {
+            envOutFree[i] = true;
+        }
 
         for (uint8_t i = 0; i < APP_SYNTH_WAVE_COUNT; i++) {
+            uint8_t outPos = patches[i].outPos;
             switch (patches[i].out) {
-            case OSC_OUT:
-                oscOut[0] = wavetable[0].next();
+            case OSC_OUT: {
+                if (oscOutFree[outPos]) {
+                    oscOut[outPos] = wavetable[outPos].next();
+                    oscOutFree[outPos] = false;
+                }
+                // then here apply out value to input params?
                 break;
+            }
 
-            case ASDR_OUT:
-                adsrOut[0] = adsr[0].next();
+            case ENV_OUT: {
+                if (envOutFree[outPos]) {
+                    envOut[outPos] = adsr[outPos].next();
+                    envOutFree[outPos] = false;
+                }
+                // then here apply out value to input params?
                 break;
-
-            case FILTER_OUT:
-                filterOut = filter.next(oscOut[0] * adsrOut[0]);
-                break;
+            }
 
             default:
                 break;
             }
         }
+
+        filterInput = oscOut[0] * envOut[0];
+        filterOut = filter.next(filterInput);
 
         return filterOut;
     }
