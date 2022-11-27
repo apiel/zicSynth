@@ -21,7 +21,7 @@ void audioCallBack(void* userdata, Uint8* stream, int len)
         i++;
         stream[i] = sampleDataU.ch[1];
 
-#if CHANNELS == 2
+#if APP_CHANNELS == 2
         i++;
         stream[i] = sampleDataU.ch[0];
         i++;
